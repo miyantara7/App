@@ -26,5 +26,11 @@ public class ItemsDetail extends BaseEntity {
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
 	}
+	public Items getItem() {
+		return item;
+	}
+	public void setItem(Items item) {
+		this.item = item;
+	}
 	
 }

@@ -3,8 +3,6 @@ package com.app.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.app.helper.Builder;
-
 public abstract class BaseDao<T> {
 
 	public Class<T> clazz;
@@ -20,7 +18,12 @@ public abstract class BaseDao<T> {
 		em.persist(entity);
 	}
 	
-	public void createUUID() {
-		em.createNativeQuery(Builder.build("create extension \"uuid-ossp\""));
+	public void edit(T entity) {
+		em.merge(entity);
 	}
+	
+	public void delete(T entity) {
+		em.remove(entity);
+	}
+
 }

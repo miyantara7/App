@@ -15,7 +15,7 @@ public class Category extends BaseEntity {
 	
 	private String description;
 	
-	@JoinColumn(name="cat_id", referencedColumnName="id")
+	@JoinColumn(name="cat_id")
 	@ManyToOne
 	private Category category;
 
@@ -42,4 +42,13 @@ public class Category extends BaseEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
 }

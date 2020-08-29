@@ -22,19 +22,19 @@ public abstract class BaseEntity {
 
 	@JsonIgnore
 	@Column(name = "created_by")
-	private String createdBy;
+	private String createdBy = "system";
 
 	@JsonIgnore
 	@Column(name = "created_at")
-	private Timestamp createdAt;
+	private Timestamp createdAt  = new Timestamp(System.currentTimeMillis());
 
 	@JsonIgnore
 	@Column(name = "updated_by")
-	private String updatedBy;
+	private String updatedBy = "system";
 
 	@JsonIgnore
 	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	private Timestamp updatedAt = new Timestamp(System.currentTimeMillis());
 
 	public String getId() {
 		return id;

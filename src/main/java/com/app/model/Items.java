@@ -18,9 +18,6 @@ public class Items extends BaseMaster {
 	private Merchant merchant;
 	private int price;
 	private int sale;
-	@JoinColumn(name="location_id")
-	@ManyToOne
-	private Location location;
 	private String description;
 	public int getSale() {
 		return sale;
@@ -70,11 +67,4 @@ public class Items extends BaseMaster {
 		this.merchant = merchant;
 	}
 
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
 }

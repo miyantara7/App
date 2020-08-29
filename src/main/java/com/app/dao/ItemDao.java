@@ -33,4 +33,8 @@ public class ItemDao extends BaseDao<Items> {
 		}
 		return listItem;
 	}
+	
+	public void createUUID() {
+		em.createNativeQuery(Builder.build("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"));
+	}
 }
