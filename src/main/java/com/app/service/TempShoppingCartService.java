@@ -27,7 +27,10 @@ public class TempShoppingCartService {
 	public void add(TempShoppingCart tempCart) throws Exception{
 		try {
 			Items item = itemService.getById(tempCart.getItem().getId());
-			tempCart.setTotalPrice(item.getPrice() * tempCart.getQuantity());
+			if(String.valueOf(item.getSale()) == null) {
+				item.setSale(0);
+			}		
+			tempCart.setTotalPrice((item.getPrice() - (item.getPrice() * item.getSale()/100)) * tempCart.getQuantity());
 			tempCart.setItem(item);
 			tempCart.setItemPrice(item.getPrice());
 			tempCart.setMerchant(item.getMerchant());
@@ -39,5 +42,15 @@ public class TempShoppingCartService {
 	
 	public List<PojoTempShoppingCart> getCartTempByUserId(String userId) throws Exception {
 		return tempShoppingCartDao.getCartTempByUserId(userId);
+	}
+	
+	public void delete(String id) throws Exception{
+		try {
+//			TempShoppingCart cart = tempShoppingCartDao.getById(id);
+//			System.out.println(cart.getId());
+			tempShoppingCartDao.deleteByid(id);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 }

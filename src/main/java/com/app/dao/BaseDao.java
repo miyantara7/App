@@ -9,6 +9,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.app.model.Items;
+
 public abstract class BaseDao<T> {
 
 	public Class<T> clazz;
@@ -30,6 +32,23 @@ public abstract class BaseDao<T> {
 	
 	public void delete(T entity) {
 		em.remove(entity);
+	}
+	
+	public void deleteByid(String id) throws Exception {
+		T entity = getById(id);
+		delete(entity);
+	}
+	
+	public T getById(String id) throws Exception{
+		return em.find(clazz, id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getAll() throws Exception{
+		List<T> list = em.createQuery("FROM "+clazz.getName())
+				.getResultList();
+
+		return !list.isEmpty() ? list: null;
 	}
 	
 	public static <T> List<T> bMapperList(List<Object[]> listMapping, Class<T> clazz, String... sql)

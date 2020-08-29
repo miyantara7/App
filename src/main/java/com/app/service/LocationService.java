@@ -2,6 +2,8 @@ package com.app.service;
 
 import java.sql.Timestamp;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import com.app.dao.LocationDao;
 import com.app.model.Location;
 
 @Service
+@Transactional
 public class LocationService {
 
 	@Autowired

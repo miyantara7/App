@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.helper.Builder;
 import com.app.helper.Constants;
 import com.app.model.TempShoppingCart;
+import com.app.pojo.PojoShoppingCart;
 import com.app.service.ItemService;
 import com.app.service.ShoppingCartService;
 import com.app.service.TempShoppingCartService;
@@ -33,7 +34,7 @@ public class ShoppingCartController {
 	private ShoppingCartService cartService;
 	
 	@Autowired
-	private ItemService itemSErvice;
+	private ItemService itemService;
 	
 	@PostMapping("/add-temp")
 	public ResponseEntity<?> addTempCart(@RequestBody TempShoppingCart cart) throws Exception {
@@ -56,4 +57,37 @@ public class ShoppingCartController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@PostMapping("/checkout")
+	public ResponseEntity<?> checkout(@RequestBody PojoShoppingCart cart) throws Exception {
+		try {
+			cartService.checkout(cart);
+			return ResponseEntity.ok(Builder
+					.build(Constants.ITEM, Constants.HAS_BEEN_ADDED));
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Builder.build(Constants.ITEM, e.getMessage()));
+		}
+	}
+	
+	@GetMapping(value = "/get-payment-method")
+	public ResponseEntity<?> getAllPayment() throws Exception {
+		try {			
+			return new ResponseEntity<>(cartService.getAllPayment(), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping(value = "/get-courier")
+	public ResponseEntity<?> getAllCourier() throws Exception {
+		try {			
+			return new ResponseEntity<>(cartService.getAllCourier(), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }

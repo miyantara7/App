@@ -1,8 +1,6 @@
 package com.app.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,19 +12,21 @@ public class ShoppingCart extends BaseEntity {
 	@JoinColumn(name="user_id")
 	@ManyToOne
 	private Users user;
-	@JoinColumn(name="merchant_id")
-	@ManyToOne
-	private Merchant merchant;
 	@JoinColumn(name="voucher_id")
 	@ManyToOne
 	private Voucher voucher;
 	private int totalPrice;
-	
-	public Merchant getMerchant() {
-		return merchant;
+	@JoinColumn(name="payment_method_id")
+	@ManyToOne
+	private PaymentMethod paymentMethod;
+	@JoinColumn(name="courier_id")
+	@ManyToOne
+	private Courier courier;
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
 	}
-	public void setMerchant(Merchant merchant) {
-		this.merchant = merchant;
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 	public Users getUser() {
 		return user;
@@ -45,5 +45,11 @@ public class ShoppingCart extends BaseEntity {
 	}
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+	public Courier getCourier() {
+		return courier;
+	}
+	public void setCourier(Courier courier) {
+		this.courier = courier;
 	}
 }

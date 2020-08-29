@@ -7,5 +7,7 @@ import com.app.model.Category;
 @Repository
 public class CategoryDao extends BaseDao<Category>{
 
-	
+	public CategoryDao() {
+		setClazz(Category.class);
+	}
 }

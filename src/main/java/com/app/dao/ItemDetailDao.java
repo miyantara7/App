@@ -10,6 +10,10 @@ import com.app.pojo.PojoItemDetail;
 @Repository
 public class ItemDetailDao extends BaseDao<ItemsDetail> {
 
+	public ItemDetailDao() {
+		setClazz(ItemsDetail.class);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<PojoItemDetail> getPojoDetailItemByItemId(String id) throws Exception{
 		List<Object[]> list = em.createNativeQuery("select id,file_name,file_type,item_id from tb_items_detail where item_id = :itemId")

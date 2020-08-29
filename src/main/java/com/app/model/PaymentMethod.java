@@ -4,19 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_voucher")
-public class Voucher extends BaseMaster {
+@Table(name = "tb_m_payment_method")
+public class PaymentMethod extends BaseMaster{
 
 	private String code;
 	private String name;
 	private int price;
-	private String type;
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
 	public String getCode() {
 		return code;
 	}

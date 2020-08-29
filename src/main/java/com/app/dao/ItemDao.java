@@ -36,14 +36,7 @@ public class ItemDao extends BaseDao<Items> {
 		return listItem;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public Items getById(String id) throws Exception{
-		List<Items> list = em.createQuery("FROM Items where id = :id")
-				.setParameter("id", id)
-				.getResultList();
 
-		return !list.isEmpty() ? list.get(0) : null;
-	}
 	
 	@SuppressWarnings("unchecked")
 	public PojoItem getPojoItemById(String id) throws Exception{

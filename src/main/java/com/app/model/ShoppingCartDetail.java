@@ -17,6 +17,9 @@ public class ShoppingCartDetail extends BaseEntity{
 	@JoinColumn(name="shopping_chart_id")
 	@ManyToOne
 	private ShoppingCart shoppingCart;
+	@JoinColumn(name="merchant_id")
+	@ManyToOne
+	private Merchant merchant;
 	public Items getItem() {
 		return item;
 	}
@@ -40,5 +43,11 @@ public class ShoppingCartDetail extends BaseEntity{
 	}
 	public void setShoppingCart(ShoppingCart shoppingCart) {
 		this.shoppingCart = shoppingCart;
+	}
+	public Merchant getMerchant() {
+		return merchant;
+	}
+	public void setMerchant(Merchant merchant) {
+		this.merchant = merchant;
 	}
 }

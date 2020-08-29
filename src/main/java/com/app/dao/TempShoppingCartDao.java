@@ -11,11 +11,14 @@ import com.app.pojo.PojoTempShoppingCart;
 @Repository
 public class TempShoppingCartDao extends BaseDao<TempShoppingCart> {
 
+	public TempShoppingCartDao() {
+		setClazz(TempShoppingCart.class);
+	}
 	@SuppressWarnings("unchecked")
 	public List<PojoTempShoppingCart> getCartTempByUserId(String userId) throws Exception{
 		List<Object[]> list = em.createNativeQuery(
 				Builder.build("select ttsc.id,tm.name ,tml.name locName, tmi.name itemName," ,
-						"tmi.price ,ttsc.quantity,ttsc.user_id,ttsc.total_price " , 
+						"tmi.price ,ttsc.quantity,ttsc.user_id,ttsc.total_price,tmi.id itemId " , 
 						"from tb_temp_shopping_chart ttsc " , 
 						"join tb_m_items tmi on ttsc.item_id = tmi.id " , 
 						"join tb_merchant tm on ttsc.merchant_id = tm.id " ,
@@ -25,6 +28,6 @@ public class TempShoppingCartDao extends BaseDao<TempShoppingCart> {
 				.getResultList();
 		
 		return bMapperList(list, PojoTempShoppingCart.class, "id","merchantName","location",
-				"itemName","price","quantity","userId","totalItemPrice");
+				"itemName","price","quantity","userId","totalItemPrice","itemId");
 	}
 }

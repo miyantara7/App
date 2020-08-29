@@ -4,11 +4,18 @@ public class PojoTempShoppingCart extends BasePojo {
 
 	private String userId;
 	private String merchantName;
+	private String itemId;
 	private String itemName;
 	private String location;
 	private int price;
 	private int quantity;
 	private int totalItemPrice;
+	public String getItemId() {
+		return itemId;
+	}
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
 	public int getTotalItemPrice() {
 		return totalItemPrice;
 	}
