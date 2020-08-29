@@ -12,26 +12,38 @@ public class TempShoppingCart extends BaseEntity {
 	@JoinColumn(name="item_id")
 	@ManyToOne
 	private Items item;
+	
 	@JoinColumn(name="merchant_id")
 	@ManyToOne
 	private Merchant merchant;
+	
 	@JoinColumn(name="user_id")
 	@ManyToOne
 	private Users user;
-	private int quantity;
-	private int price;
 	
+	private int quantity;
+	
+	private int itemPrice;
+	
+	private int totalPrice;
+	
+	public int getItemPrice() {
+		return itemPrice;
+	}
+	public void setItemPrice(int itemPrice) {
+		this.itemPrice = itemPrice;
+	}
 	public int getQuantity() {
 		return quantity;
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public int getPrice() {
-		return price;
+	public int getTotalPrice() {
+		return totalPrice;
 	}
-	public void setPrice(int price) {
-		this.price = price;
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 	public Items getItem() {
 		return item;

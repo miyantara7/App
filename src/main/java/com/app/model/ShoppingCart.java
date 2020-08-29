@@ -1,6 +1,8 @@
 package com.app.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -9,7 +11,6 @@ import javax.persistence.Table;
 @Table(name = "tb_shopping_chart")
 public class ShoppingCart extends BaseEntity {
 
-	private String noTransaction;
 	@JoinColumn(name="user_id")
 	@ManyToOne
 	private Users user;
@@ -20,12 +21,7 @@ public class ShoppingCart extends BaseEntity {
 	@ManyToOne
 	private Voucher voucher;
 	private int totalPrice;
-	public String getNoTransaction() {
-		return noTransaction;
-	}
-	public void setNoTransaction(String noTransaction) {
-		this.noTransaction = noTransaction;
-	}
+	
 	public Merchant getMerchant() {
 		return merchant;
 	}

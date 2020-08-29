@@ -1,9 +1,11 @@
 package com.app.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_items_detail")
@@ -12,6 +14,9 @@ public class ItemsDetail extends BaseEntity {
 	@JoinColumn(name="item_id")
 	@ManyToOne
 	private Items item;
+	
+	@Transient
+	private String photo;
 	private String fileName;
 	private String fileType;
 	public String getFileName() {
@@ -33,4 +38,10 @@ public class ItemsDetail extends BaseEntity {
 		this.item = item;
 	}
 	
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 }

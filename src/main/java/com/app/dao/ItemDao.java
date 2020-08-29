@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.app.helper.Builder;
 import com.app.model.Items;
+import com.app.pojo.PojoItem;
+import com.app.pojo.PojoItemDetail;
 
 @Repository
 public class ItemDao extends BaseDao<Items> {
@@ -34,7 +36,28 @@ public class ItemDao extends BaseDao<Items> {
 		return listItem;
 	}
 	
-	public void createUUID() {
-		em.createNativeQuery(Builder.build("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"));
+	@SuppressWarnings("unchecked")
+	public Items getById(String id) throws Exception{
+		List<Items> list = em.createQuery("FROM Items where id = :id")
+				.setParameter("id", id)
+				.getResultList();
+
+		return !list.isEmpty() ? list.get(0) : null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public PojoItem getPojoItemById(String id) throws Exception{
+		List<Object[]> list = em.createNativeQuery(
+				Builder.build("select tmi.id,tmi.name,tmi.price,tmi.quantity,tmi.sale,tmi.description," , 
+						"tm.name as merchantName ,tc.name as catName " , 
+						"FROM tb_m_items tmi " ,
+						"LEFT JOIN tb_merchant tm on tmi.merchant_id = tm.id " , 
+						"JOIN tb_categories tc on tc.id = tmi.cat_id " , 
+						"WHERE tmi.id = :itemId"))
+				.setParameter("itemId", id)
+				.getResultList();
+		
+		return bMapperList(list, PojoItem.class, "id","name","price","quantity","sale","description","merchant","category").get(0);
+	}
+	
 }

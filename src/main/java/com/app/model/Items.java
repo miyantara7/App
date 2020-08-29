@@ -1,5 +1,6 @@
 package com.app.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,10 +19,22 @@ public class Items extends BaseMaster {
 	private Merchant merchant;
 	private int price;
 	private int sale;
+	@Column(nullable = true)
+	private Integer quantity;
 	private String description;
 	public int getSale() {
 		return sale;
 	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
 
 	public void setSale(int sale) {
 		this.sale = sale;
