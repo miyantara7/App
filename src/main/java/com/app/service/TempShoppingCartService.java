@@ -44,7 +44,7 @@ public class TempShoppingCartService {
 	
 	public void delete(String id) throws Exception{
 		try {
-			tempShoppingCartDao.deleteByid(id);
+			tempShoppingCartDao.deleteById(id);
 		} catch (Exception e) {
 			throw e;
 		}

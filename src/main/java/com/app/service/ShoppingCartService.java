@@ -118,6 +118,10 @@ public class ShoppingCartService {
 		return courierService.getAll();
 	}
 	
+	public List<Object> getAllVoucher() throws Exception{
+		return voucherService.getAllVoucherActive();
+	}
+	
 	public void deleteItem(List<BasePojo> listItem) throws Exception{
 		for(BasePojo o : listItem) {
 			tempShoppingCartService.delete(o.getId());

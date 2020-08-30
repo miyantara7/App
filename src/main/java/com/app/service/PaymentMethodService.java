@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.dao.PaymentMethodDao;
 import com.app.model.PaymentMethod;
+import com.app.pojo.PojoIdSelector;
 
 @Service
 @Transactional
@@ -29,6 +30,51 @@ public class PaymentMethodService {
 	public void add(PaymentMethod paymentMethod) throws Exception{
 		try {
 			paymentMethodDao.add(paymentMethod);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void editPaymentMethod(PaymentMethod paymentMethods) throws Exception{
+		try {
+			PaymentMethod paymentMethod = getById(paymentMethods.getId());
+			paymentMethod.setCode(paymentMethods.getCode());
+			paymentMethod.setName(paymentMethod.getName());
+			paymentMethod.setPrice(paymentMethods.getPrice());
+			edit(paymentMethod);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void editActive(PaymentMethod paymentMethods) throws Exception{
+		try {
+			PaymentMethod paymentMethod = getById(paymentMethods.getId());
+			paymentMethod.setIsActive(false);
+			edit(paymentMethod);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void edit(PaymentMethod paymentMethod) throws Exception{
+		try {
+			paymentMethodDao.edit(paymentMethod);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void deleteList(List<PojoIdSelector> listPaymentMethod) throws Exception{
+		for(PojoIdSelector paymentMethod : listPaymentMethod) {
+			delete(paymentMethod.getId());
+		}
+	}
+	
+	
+	public void delete(String id) throws Exception{
+		try {
+			paymentMethodDao.deleteById(id);
 		} catch (Exception e) {
 			throw e;
 		}

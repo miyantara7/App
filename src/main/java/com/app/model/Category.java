@@ -6,8 +6,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_categories")
-public class Category extends BaseEntity {
+@Table(name = "tb_m_categories")
+public class Category extends BaseMaster {
 
 	private String code;
 	

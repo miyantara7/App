@@ -32,7 +32,7 @@ public abstract class BaseDao<T> {
 		em.remove(entity);
 	}
 	
-	public void deleteByid(String id) throws Exception {
+	public void deleteById(String id) throws Exception {
 		T entity = getById(id);
 		delete(entity);
 	}

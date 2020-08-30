@@ -19,7 +19,7 @@ public class CategoryDao extends BaseDao<Category>{
 	@SuppressWarnings("unchecked")
 	public List<Object> getHeadCategory() throws Exception{
 		List<Object[]> list = em.createNativeQuery(
-				Builder.build("select id,code,name from tb_categories tc " , 
+				Builder.build("select id,code,name from tb_m_categories tc " , 
 						"where tc.cat_id is null"))
 				.getResultList();
 		
@@ -36,9 +36,9 @@ public class CategoryDao extends BaseDao<Category>{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> getSubCategory(String id) throws Exception{
+	public List<Object> getPojoSubCategory(String id) throws Exception{
 		List<Object[]> list = em.createNativeQuery(
-				Builder.build("select id,code,name from tb_categories tc " , 
+				Builder.build("select id,code,name from tb_m_categories tc " , 
 						"where tc.cat_id = :id "))
 				.setParameter("id", id)
 				.getResultList();
@@ -53,5 +53,16 @@ public class CategoryDao extends BaseDao<Category>{
 			listCategories.add(category);
 		}
 		return listCategories;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Category> getSubCategory(String id) throws Exception{
+		List<Object[]> list = em.createNativeQuery(
+				Builder.build("select id,code,name from tb_m_categories tc " , 
+						"where tc.cat_id = :id "))
+				.setParameter("id", id)
+				.getResultList();
+
+		return bMapperList(list, Category.class, "id","code","name");
 	}
 }

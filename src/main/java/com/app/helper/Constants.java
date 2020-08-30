@@ -8,4 +8,10 @@ public class Constants {
 	
 	
 	public static final String ITEM = "Item.";
+	public static final String CATEGORY = "Category.";
+	public static final String COURIER = "Courier.";
+	public static final String LOCATION = "Location.";
+	public static final String PAYMENT = "Payment.";
+	public static final String MERCHANT = "Merchant.";
+	public static final String VOUCHER = "VOUCHER.";
 }

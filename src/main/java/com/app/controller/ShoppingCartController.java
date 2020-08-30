@@ -88,6 +88,16 @@ public class ShoppingCartController {
 		}
 	}
 	
+	@GetMapping(value = "/get-voucher")
+	public ResponseEntity<?> getAllVoucher() throws Exception {
+		try {			
+			return new ResponseEntity<>(cartService.getAllVoucher(), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@DeleteMapping("/delete-item")
 	public ResponseEntity<?> deleteItem(@RequestBody List<BasePojo> listItem) throws Exception {
 		try {

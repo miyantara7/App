@@ -25,7 +25,13 @@ public class ItemDao extends BaseDao<Items> {
 	@SuppressWarnings("unchecked")
 	public List<Object> getAllItem() throws Exception{
 		List<Object[]> list = em.createNativeQuery(
-				Builder.build("select *from tb_m_items"))
+				Builder.build("select tmi.id, tmi.name as item,tml.name as location,",
+						"tm.name as merchant,tmi.price ",
+						"from tb_m_items tmi " , 
+						"left join tb_merchant tm on tm.id = tmi.merchant_id " , 
+						"join tb_m_location tml on tm.location_id = tml.id " ,
+						"where tmi.sale <= 0 and tmi.is_active = true " , 
+						"group by tmi.id, tmi.name ,tml.name,tm.name,tmi.price,tmi.sale "))
 				.getResultList();
 		
 		List<Object> listItem = new ArrayList<>();
@@ -33,8 +39,10 @@ public class ItemDao extends BaseDao<Items> {
 		for(Object[] o : list) {
 			LinkedHashMap<String, Object> item = new LinkedHashMap<>();
 			item.put("id", (String)o[0]);
-			item.put("name", (String)o[7]);
-			item.put("price", (int)o[8]);
+			item.put("name", (String)o[1]);
+			item.put("location", (String)o[2]);
+			item.put("merchant", (String)o[3]);
+			item.put("price", (int)o[4]);
 			listItem.add(item);
 		}
 		return listItem;
@@ -49,7 +57,7 @@ public class ItemDao extends BaseDao<Items> {
 						"from tb_m_items tmi " , 
 						"left join tb_merchant tm on tm.id = tmi.merchant_id " , 
 						"join tb_m_location tml on tm.location_id = tml.id " ,
-						"where tmi.sale > 0 " , 
+						"where tmi.sale > 0 and tmi.is_active = true " , 
 						"group by tmi.id, tmi.name ,tml.name,tm.name,tmi.price,tmi.sale"))
 				.getResultList();
 		
@@ -78,7 +86,7 @@ public class ItemDao extends BaseDao<Items> {
 						"FROM tb_m_items tmi " ,
 						"LEFT JOIN tb_merchant tm on tmi.merchant_id = tm.id " , 
 						"JOIN tb_categories tc on tc.id = tmi.cat_id " , 
-						"WHERE tmi.id = :itemId"))
+						"WHERE tmi.id = :itemId " ))
 				.setParameter("itemId", id)
 				.getResultList();
 		
@@ -121,6 +129,7 @@ public class ItemDao extends BaseDao<Items> {
 		sb.append("tmi.price,tmi.sale,sum(tmi.price - (tmi.price * tmi.sale/100)) as priceSale from tb_m_items tmi ");
 		sb.append("join tb_merchant tm on tmi.merchant_id = tm.id ");
 		sb.append("join tb_m_location tml on tm.location_id = tml.id ");
+		sb.append("WHERE tmi.is_active = true ");
 		sb.append("group by tmi.id, tmi.name ,tml.name,tm.name,tmi.price,tmi.sale ) as item ");
 		sb.append("where 1=1 ");
 
@@ -147,6 +156,32 @@ public class ItemDao extends BaseDao<Items> {
 			item.put("price", (int) o[5]);
 			item.put("sale", (int) o[6]);
 			item.put("priceSale", ((BigInteger) o[7]).intValue());
+			listItem.add(item);
+		}
+		return listItem;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getAllItemByUser(String userId) throws Exception{
+		List<Object[]> list = em.createNativeQuery(
+				Builder.build("select tmi.id, tmi.name as item,tmi.quantity ,tmi.price ,tc.name " , 
+						"from tb_m_items tmi " , 
+						"left join tb_m_categories tc on tmi.cat_id = tc.id " , 
+						"left join tb_merchant tm on tm.id = tmi.merchant_id " , 
+						"join tb_users tu on tu.id = tm.user_id " ,
+						"WHERE tu.id = :userId "))
+				.setParameter("userId", userId)
+				.getResultList();
+		
+		List<Object> listItem = new ArrayList<>();
+		
+		for(Object[] o : list) {
+			LinkedHashMap<String, Object> item = new LinkedHashMap<>();
+			item.put("id", (String)o[0]);
+			item.put("name", (String)o[1]);
+			item.put("quantity", (int)o[2]);
+			item.put("price", (int)o[3]);
+			item.put("category", (String)o[4]);
 			listItem.add(item);
 		}
 		return listItem;

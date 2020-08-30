@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dao.ItemDao;
 import com.app.model.Items;
+import com.app.pojo.PojoIdSelector;
 import com.app.pojo.PojoItems;
 import com.app.pojo.PojoSearchItem;
 
@@ -52,7 +53,7 @@ public class ItemService extends BaseService {
 		}
 	}
 	
-	public void edit(Items tempItem) throws Exception{
+	public void editItem(Items tempItem) throws Exception{
 		try {
 			Items item = getById(tempItem.getId());
 			item.setQuantity(tempItem.getQuantity());
@@ -63,7 +64,39 @@ public class ItemService extends BaseService {
 			item.setDescription(tempItem.getDescription());
 			item.setIsActive(tempItem.getIsActive());
 			item.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-			itemDao.add(item);
+			edit(item);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void editActive(Items tempItem) throws Exception{
+		try {
+			Items item = getById(tempItem.getId());
+			item.setIsActive(false);
+			edit(item);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void edit(Items item) throws Exception{
+		try {
+			itemDao.edit(item);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void deleteList(List<PojoIdSelector> listItem) throws Exception{
+		for(PojoIdSelector o : listItem) {
+			delete(o.getId());
+		}
+	}
+	
+	public void delete(String id) throws Exception{
+		try {
+			itemDao.deleteById(id);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -100,5 +133,7 @@ public class ItemService extends BaseService {
 	public List<Object> getItemBySearch(PojoSearchItem pojoSearch) throws Exception{
 		return itemDao.getItemBySearch(pojoSearch);
 	}
-
+	public List<Object> getAllItemByUser(String userId) throws Exception{
+		return itemDao.getAllItemByUser(userId);
+	}
 }

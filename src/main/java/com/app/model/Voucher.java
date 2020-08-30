@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_voucher")
+@Table(name = "tb_m_voucher")
 public class Voucher extends BaseMaster {
 
 	private String code;

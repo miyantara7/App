@@ -1,6 +1,7 @@
 package com.app.service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.dao.VoucherDao;
 import com.app.model.Voucher;
+import com.app.pojo.PojoIdSelector;
 
 @Service
 @Transactional
@@ -68,6 +70,24 @@ public class VoucherService {
 		}
 	}
 	
+	public void deleteList(List<PojoIdSelector> listVoucher) throws Exception{
+		for(PojoIdSelector voucher : listVoucher) {
+			delete(voucher.getId());
+		}
+	}
 	
+	public void delete(String id) throws Exception{
+		try {
+			voucherDao.deleteById(id);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	public List<Voucher> getAll() throws Exception{
+		return voucherDao.getAll();
+	}
 	
+	public List<Object> getAllVoucherActive() throws Exception{
+		return voucherDao.getAllVoucherActive();
+	}
 }

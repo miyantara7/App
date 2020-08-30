@@ -28,15 +28,14 @@ public class MerchantController {
 
 	@Autowired
 	private MerchantService merchantService;
-	
-	
+		
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> add(@RequestBody Merchant merchant) throws Exception {
 		try {
 			merchantService.add(merchant);
 			return ResponseEntity.ok(Builder
-					.build(Constants.ITEM, Constants.HAS_BEEN_ADDED));
+					.build(Constants.MERCHANT, Constants.HAS_BEEN_ADDED));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Builder.build(Constants.ITEM, e.getMessage()));
