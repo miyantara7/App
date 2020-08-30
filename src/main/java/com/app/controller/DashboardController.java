@@ -1,7 +1,5 @@
 package com.app.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +8,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.pojo.BasePojo;
+import com.app.pojo.PojoSearchItem;
 import com.app.service.CategoryService;
 import com.app.service.ItemService;
 
@@ -77,12 +76,13 @@ public class DashboardController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@PostMapping(value = "/search")
-	public ResponseEntity<?> getItemBySearch(String inquiry, List<BasePojo> listCategory) throws Exception {
+
+	@PostMapping(value = "/filter")
+	public ResponseEntity<?> getItemBySearch(@RequestBody PojoSearchItem pojoSearch) throws Exception {
 		try {			
-			return new ResponseEntity<>(itemService.getItemBySearch(inquiry,listCategory), HttpStatus.OK);
+			return new ResponseEntity<>(itemService.getItemBySearch(pojoSearch), HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -11,8 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import com.app.helper.Builder;
 import com.app.model.Items;
-import com.app.pojo.BasePojo;
+import com.app.pojo.PojoIdSelector;
 import com.app.pojo.PojoItem;
+import com.app.pojo.PojoSearchItem;
 
 @Repository
 public class ItemDao extends BaseDao<Items> {
@@ -84,18 +85,10 @@ public class ItemDao extends BaseDao<Items> {
 		return bMapperList(list, PojoItem.class, "id","name","price","quantity","sale","description","merchant","category").get(0);
 	}
 	
-	public String setQueryForItemSearch(StringBuilder sb,List<BasePojo> listCategory,String inquiry) throws Exception{ 
+	public String setQueryForItemSearch(StringBuilder sb,List<PojoIdSelector> listCategory) throws Exception{ 
 
-		if (inquiry != null && !inquiry.isEmpty()) {
-			sb.append(" AND POSITION(LOWER('").append(inquiry).append("') in LOWER(CONCAT(")
-					.append("item.id,item.itemName,item.location,item.cat_id,"
-							+ "item.merchant,item.price,item.sale,item.priceSale")
-					.append("))) > 0");
-		}
-
-		
 		if (!listCategory.isEmpty() || listCategory != null) {
-			for (int i = 0; i < listCategory.size(); i++) {
+			for (int i = 1; i <= listCategory.size(); i++) {
 				if (i == 1) {
 					sb.append(" AND item.cat_id = :catId" + i);
 				} else {
@@ -106,34 +99,42 @@ public class ItemDao extends BaseDao<Items> {
 		return sb.toString();
 	}
 	
-	public Query setParamForItemSearch(Query query,List<BasePojo> listCategory) throws Exception{  
+	public Query setParamForItemSearch(Query query,List<PojoIdSelector> listCategory) throws Exception{  
+
 		int counter = 0;
 		if (!listCategory.isEmpty() || listCategory != null) {
-			counter++;
-			for (BasePojo o : listCategory) {
-				if (counter == 1) {
-					query.setParameter("catId"+counter, o.getId());
-				} 
+			for (PojoIdSelector o : listCategory) {
+				counter++;
+				query.setParameter("catId"+counter, o.getId());
 			}
 		}
+		
 		return query;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> getItemBySearch(String inquiry, List<BasePojo> listCategory) throws Exception{
+	public List<Object> getItemBySearch(PojoSearchItem pojoSearch) throws Exception{
 		StringBuilder sb = new StringBuilder();
 		sb.append("select item.id,item.itemName,item.location,item.cat_id,item.merchant,item.price,item.sale,item.priceSale ");
 		sb.append("FROM ( ");
-		sb.append("select tmi.id, tmi.name as itemName,tml.name as location,tm.name as merchant,");
+		sb.append("select tmi.id, tmi.name as itemName,tml.name as location,tmi.cat_id,tm.name as merchant,");
 		sb.append("tmi.price,tmi.sale,sum(tmi.price - (tmi.price * tmi.sale/100)) as priceSale from tb_m_items tmi ");
 		sb.append("join tb_merchant tm on tmi.merchant_id = tm.id ");
 		sb.append("join tb_m_location tml on tm.location_id = tml.id ");
 		sb.append("group by tmi.id, tmi.name ,tml.name,tm.name,tmi.price,tmi.sale ) as item ");
 		sb.append("where 1=1 ");
 
-		Query query = em.createNativeQuery(sb.toString() + setQueryForItemSearch(sb, listCategory,inquiry));
+		
+		if (pojoSearch.getInquiry() != null && !pojoSearch.getInquiry().isEmpty()) {
+			sb.append(" AND POSITION(LOWER('").append(pojoSearch.getInquiry()).append("') in LOWER(CONCAT(")
+					.append("item.id,item.itemName,item.location,item.cat_id,"
+							+ "item.merchant,item.price,item.sale,item.priceSale")
+					.append("))) > 0 ");
+		}
 
-		List<Object[]> list = setParamForItemSearch(query, listCategory).getResultList();
+		Query query = em.createNativeQuery(setQueryForItemSearch(sb, pojoSearch.getListCategories()));
+		
+		List<Object[]> list = setParamForItemSearch(query, pojoSearch.getListCategories()).getResultList();
 
 		List<Object> listItem = new ArrayList<>();
 
@@ -150,4 +151,5 @@ public class ItemDao extends BaseDao<Items> {
 		}
 		return listItem;
 	}
+
 }

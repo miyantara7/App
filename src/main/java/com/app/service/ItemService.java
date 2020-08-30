@@ -12,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dao.ItemDao;
 import com.app.model.Items;
-import com.app.pojo.BasePojo;
 import com.app.pojo.PojoItems;
+import com.app.pojo.PojoSearchItem;
 
 @Service
 @Transactional
@@ -96,9 +96,9 @@ public class ItemService extends BaseService {
 		}
 		return pojo;
 	}
-	
-	public List<Object> getItemBySearch(String inquiry, List<BasePojo> listCategory) throws Exception{
-		return itemDao.getItemBySearch(inquiry,listCategory);
+
+	public List<Object> getItemBySearch(PojoSearchItem pojoSearch) throws Exception{
+		return itemDao.getItemBySearch(pojoSearch);
 	}
 
 }
