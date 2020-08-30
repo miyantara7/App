@@ -9,8 +9,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.app.model.Items;
-
 public abstract class BaseDao<T> {
 
 	public Class<T> clazz;
@@ -112,30 +110,5 @@ public abstract class BaseDao<T> {
 			if (isFound)
 				break;
 		}
-	}
-
-	public static <T> List<T> bMapper(List<Object> listMapping, Class<T> clazz, String... sql) throws Exception {
-		List<T> listResult = new ArrayList<>();
-		List<String> listObj = new ArrayList<>();
-		for(int i= 0;i<sql.length;i++) {
-			listObj.add(sql[i]);
-		}
-
-		listMapping.forEach(valDb -> {
-			try {
-				T newClass = clazz.newInstance();
-				Method[] methods = clazz.getDeclaredMethods();
-				List<Method> listMethod = new ArrayList<>(Arrays.asList(methods));
-				getSuperMethod(clazz, listMethod);
-
-				invokeMethod(newClass, listMethod, valDb, listObj.get(0));
-
-				listResult.add(newClass);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-
-		return listResult;
 	}
 }

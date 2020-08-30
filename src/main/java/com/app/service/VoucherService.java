@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.dao.VoucherDao;
-import com.app.model.Items;
 import com.app.model.Voucher;
 
 @Service

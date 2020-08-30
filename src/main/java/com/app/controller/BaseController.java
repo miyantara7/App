@@ -20,7 +20,6 @@ public abstract class BaseController {
 
 	@Bean
 	public void createStorage() throws Exception{
-		System.out.println("masuk");
 		if (!Files.exists(Paths.get(path))) {
 			File files = new File(path);
 			files.mkdirs();         

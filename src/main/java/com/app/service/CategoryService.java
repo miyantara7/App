@@ -1,6 +1,7 @@
 package com.app.service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -27,5 +28,13 @@ public class CategoryService {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+	
+	public List<Object> getHeadCategory() throws Exception{
+		return categoryDao.getHeadCategory();
+	}
+	
+	public List<Object> getSubCategory(String id) throws Exception{
+		return categoryDao.getSubCategory(id);
 	}
 }

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.dao.PaymentMethodDao;
-import com.app.model.Courier;
 import com.app.model.PaymentMethod;
 
 @Service

@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.app.helper.Builder;
 import com.app.helper.Constants;
-import com.app.model.Items;
 import com.app.model.Voucher;
 import com.app.service.VoucherService;
 

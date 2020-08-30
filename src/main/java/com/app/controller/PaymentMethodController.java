@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.helper.Builder;
 import com.app.helper.Constants;
-import com.app.model.Courier;
 import com.app.model.PaymentMethod;
 import com.app.service.PaymentMethodService;
 

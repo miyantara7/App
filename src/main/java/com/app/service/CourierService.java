@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.app.dao.CourierDao;
 import com.app.model.Courier;
-import com.app.model.PaymentMethod;
-import com.app.model.Voucher;
 
 @Service
 @Transactional

@@ -15,6 +15,7 @@ import com.app.model.ShoppingCart;
 import com.app.model.ShoppingCartDetail;
 import com.app.model.TempShoppingCart;
 import com.app.model.Voucher;
+import com.app.pojo.BasePojo;
 import com.app.pojo.PojoShoppingCart;
 import com.app.pojo.PojoTempShoppingCart;
 
@@ -24,9 +25,6 @@ public class ShoppingCartService {
 
 	@Autowired
 	private TempShoppingCartService tempShoppingCartService;
-	
-	@Autowired
-	private ShoppingCartService shoppingCartService;
 	
 	@Autowired
 	private VoucherService voucherService;
@@ -118,5 +116,11 @@ public class ShoppingCartService {
 	
 	public List<Courier> getAllCourier() throws Exception{
 		return courierService.getAll();
+	}
+	
+	public void deleteItem(List<BasePojo> listItem) throws Exception{
+		for(BasePojo o : listItem) {
+			tempShoppingCartService.delete(o.getId());
+		}
 	}
 }

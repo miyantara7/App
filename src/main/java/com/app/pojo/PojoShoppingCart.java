@@ -7,7 +7,6 @@ import com.app.model.Merchant;
 import com.app.model.PaymentMethod;
 import com.app.model.Users;
 import com.app.model.Voucher;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class PojoShoppingCart {
 

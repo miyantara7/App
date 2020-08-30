@@ -1,12 +1,14 @@
 package com.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.helper.Builder;
 import com.app.helper.Constants;
 import com.app.model.TempShoppingCart;
+import com.app.pojo.BasePojo;
 import com.app.pojo.PojoShoppingCart;
-import com.app.service.ItemService;
 import com.app.service.ShoppingCartService;
-import com.app.service.TempShoppingCartService;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -32,9 +33,6 @@ public class ShoppingCartController {
 
 	@Autowired
 	private ShoppingCartService cartService;
-	
-	@Autowired
-	private ItemService itemService;
 	
 	@PostMapping("/add-temp")
 	public ResponseEntity<?> addTempCart(@RequestBody TempShoppingCart cart) throws Exception {
@@ -90,4 +88,15 @@ public class ShoppingCartController {
 		}
 	}
 	
+	@DeleteMapping("/delete-item")
+	public ResponseEntity<?> deleteItem(@RequestBody List<BasePojo> listItem) throws Exception {
+		try {
+			cartService.deleteItem(listItem);
+			return ResponseEntity.ok(Builder
+					.build(Constants.ITEM, Constants.HAS_BEEN_ADDED));
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Builder.build(Constants.ITEM, e.getMessage()));
+		}
+	}
 }

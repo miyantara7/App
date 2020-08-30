@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.helper.Builder;
 import com.app.helper.Constants;
-import com.app.model.Location;
 import com.app.model.Users;
-import com.app.service.LocationService;
 import com.app.service.UsersService;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;

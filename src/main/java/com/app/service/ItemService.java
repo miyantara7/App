@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dao.ItemDao;
 import com.app.model.Items;
-import com.app.model.PaymentMethod;
+import com.app.pojo.BasePojo;
 import com.app.pojo.PojoItems;
 
 @Service
@@ -79,8 +79,12 @@ public class ItemService extends BaseService {
 		}
 	}
 	
-	public List<?> getAllItem() throws Exception{
+	public List<Object> getAllItem() throws Exception{
 		return itemDao.getAllItem();
+	}
+	
+	public List<Object> getItemSale() throws Exception{
+		return itemDao.getItemSale();
 	}
 	
 	public PojoItems getItemById(String id) throws Exception{
@@ -91,6 +95,10 @@ public class ItemService extends BaseService {
 			pojo.setListItemDetail(itemDetailService.getPojoDetailItemByItemId(id));
 		}
 		return pojo;
+	}
+	
+	public List<Object> getItemBySearch(String inquiry, List<BasePojo> listCategory) throws Exception{
+		return itemDao.getItemBySearch(inquiry,listCategory);
 	}
 
 }

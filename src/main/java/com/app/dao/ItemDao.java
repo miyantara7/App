@@ -1,15 +1,18 @@
 package com.app.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
 import com.app.helper.Builder;
 import com.app.model.Items;
+import com.app.pojo.BasePojo;
 import com.app.pojo.PojoItem;
-import com.app.pojo.PojoItemDetail;
 
 @Repository
 public class ItemDao extends BaseDao<Items> {
@@ -19,7 +22,7 @@ public class ItemDao extends BaseDao<Items> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<?> getAllItem() throws Exception{
+	public List<Object> getAllItem() throws Exception{
 		List<Object[]> list = em.createNativeQuery(
 				Builder.build("select *from tb_m_items"))
 				.getResultList();
@@ -36,7 +39,35 @@ public class ItemDao extends BaseDao<Items> {
 		return listItem;
 	}
 	
-
+	@SuppressWarnings("unchecked")
+	public List<Object> getItemSale() throws Exception{
+		List<Object[]> list = em.createNativeQuery(
+				Builder.build("select tmi.id, tmi.name as item,tml.name as location,",
+						"tm.name as merchant," ,
+						"tmi.price,tmi.sale,sum(tmi.price - (tmi.price * tmi.sale/100)) as priceSale ",
+						"from tb_m_items tmi " , 
+						"left join tb_merchant tm on tm.id = tmi.merchant_id " , 
+						"join tb_m_location tml on tm.location_id = tml.id " ,
+						"where tmi.sale > 0 " , 
+						"group by tmi.id, tmi.name ,tml.name,tm.name,tmi.price,tmi.sale"))
+				.getResultList();
+		
+		List<Object> listItem = new ArrayList<>();
+		
+		for(Object[] o : list) {
+			LinkedHashMap<String, Object> item = new LinkedHashMap<>();
+			item.put("id", (String)o[0]);
+			item.put("name", (String)o[1]);
+			item.put("location", (String)o[2]);
+			item.put("merchant", (String)o[3]);
+			item.put("price", (int)o[4]);
+			item.put("sale", (int)o[5]);
+			item.put("priceSale", ((BigInteger)o[6]).intValue());
+			listItem.add(item);
+		}
+		return listItem;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public PojoItem getPojoItemById(String id) throws Exception{
@@ -53,4 +84,70 @@ public class ItemDao extends BaseDao<Items> {
 		return bMapperList(list, PojoItem.class, "id","name","price","quantity","sale","description","merchant","category").get(0);
 	}
 	
+	public String setQueryForItemSearch(StringBuilder sb,List<BasePojo> listCategory,String inquiry) throws Exception{ 
+
+		if (inquiry != null && !inquiry.isEmpty()) {
+			sb.append(" AND POSITION(LOWER('").append(inquiry).append("') in LOWER(CONCAT(")
+					.append("item.id,item.itemName,item.location,item.cat_id,"
+							+ "item.merchant,item.price,item.sale,item.priceSale")
+					.append("))) > 0");
+		}
+
+		
+		if (!listCategory.isEmpty() || listCategory != null) {
+			for (int i = 0; i < listCategory.size(); i++) {
+				if (i == 1) {
+					sb.append(" AND item.cat_id = :catId" + i);
+				} else {
+					sb.append(" OR item.cat_id = :catId" + i);
+				}
+			}
+		}
+		return sb.toString();
+	}
+	
+	public Query setParamForItemSearch(Query query,List<BasePojo> listCategory) throws Exception{  
+		int counter = 0;
+		if (!listCategory.isEmpty() || listCategory != null) {
+			counter++;
+			for (BasePojo o : listCategory) {
+				if (counter == 1) {
+					query.setParameter("catId"+counter, o.getId());
+				} 
+			}
+		}
+		return query;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> getItemBySearch(String inquiry, List<BasePojo> listCategory) throws Exception{
+		StringBuilder sb = new StringBuilder();
+		sb.append("select item.id,item.itemName,item.location,item.cat_id,item.merchant,item.price,item.sale,item.priceSale ");
+		sb.append("FROM ( ");
+		sb.append("select tmi.id, tmi.name as itemName,tml.name as location,tm.name as merchant,");
+		sb.append("tmi.price,tmi.sale,sum(tmi.price - (tmi.price * tmi.sale/100)) as priceSale from tb_m_items tmi ");
+		sb.append("join tb_merchant tm on tmi.merchant_id = tm.id ");
+		sb.append("join tb_m_location tml on tm.location_id = tml.id ");
+		sb.append("group by tmi.id, tmi.name ,tml.name,tm.name,tmi.price,tmi.sale ) as item ");
+		sb.append("where 1=1 ");
+
+		Query query = em.createNativeQuery(sb.toString() + setQueryForItemSearch(sb, listCategory,inquiry));
+
+		List<Object[]> list = setParamForItemSearch(query, listCategory).getResultList();
+
+		List<Object> listItem = new ArrayList<>();
+
+		for (Object[] o : list) {
+			LinkedHashMap<String, Object> item = new LinkedHashMap<>();
+			item.put("id", (String) o[0]);
+			item.put("name", (String) o[1]);
+			item.put("location", (String) o[2]);
+			item.put("merchant", (String) o[4]);
+			item.put("price", (int) o[5]);
+			item.put("sale", (int) o[6]);
+			item.put("priceSale", ((BigInteger) o[7]).intValue());
+			listItem.add(item);
+		}
+		return listItem;
+	}
 }

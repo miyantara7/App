@@ -6,12 +6,10 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dao.TempShoppingCartDao;
 import com.app.model.Items;
 import com.app.model.TempShoppingCart;
-import com.app.model.Users;
 import com.app.pojo.PojoTempShoppingCart;
 
 @Service
@@ -46,8 +44,6 @@ public class TempShoppingCartService {
 	
 	public void delete(String id) throws Exception{
 		try {
-//			TempShoppingCart cart = tempShoppingCartDao.getById(id);
-//			System.out.println(cart.getId());
 			tempShoppingCartDao.deleteByid(id);
 		} catch (Exception e) {
 			throw e;
