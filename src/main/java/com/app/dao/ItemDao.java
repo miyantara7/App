@@ -85,7 +85,7 @@ public class ItemDao extends BaseDao<Items> {
 						"tm.name as merchantName ,tc.name as catName " , 
 						"FROM tb_m_items tmi " ,
 						"LEFT JOIN tb_merchant tm on tmi.merchant_id = tm.id " , 
-						"JOIN tb_categories tc on tc.id = tmi.cat_id " , 
+						"JOIN tb_m_categories tc on tc.id = tmi.cat_id " , 
 						"WHERE tmi.id = :itemId " ))
 				.setParameter("itemId", id)
 				.getResultList();
